@@ -51,6 +51,8 @@ public:
                     v = std::pow(v, 3)* 6;
                     m_gamma[i] = v*6*256;
             }
+
+
         }
         // Do not call directly even in child
         void VideoCallback(void* _rgb, uint32_t timestamp) {
@@ -163,6 +165,7 @@ public:
         rgb.resize(640*480*4);
         freenect_video_format requested_format = FREENECT_VIDEO_RGB;
         device = &myfreenect.createDevice<MyFreenectDevice>(0);
+        device->setDepthFormat(FREENECT_DEPTH_REGISTERED);
         device->setVideoFormat(requested_format);
         device->startDepth();
         device->startVideo();
@@ -178,9 +181,7 @@ public:
     {
 
         //get rgb and depth data
-        std::cout << "getting depth" <<std::endl;
         while(!device -> getDepth(depth_map)){}
-        std::cout << "getting rgb" <<std::endl;            
         while(!device -> getRGB(rgb)){}
 
 
@@ -222,9 +223,12 @@ public:
                         ptout.z = ptd.z()*0.001f;
                     
                     if(colored){
-                        //char pix = rgb_buffer[y*depth_width + x];
-                        //ptout.rgba = pcl::PointXYZRGB(pix.r,pix.g,pix.b).rgba; //assign color 
-                        ptout.rgba = pcl::PointXYZRGB(0, 0, 0).rgba;
+                        uint8_t r = rgb[(y*depth_width + x)*3];
+                        uint8_t g = rgb[(y*depth_width + x)*3 + 1];
+                        uint8_t b = rgb[(y*depth_width + x)*3 + 2];
+
+                        ptout.rgba = pcl::PointXYZRGB(r, g, b).rgba; //assign color 
+                        //ptout.rgba = pcl::PointXYZRGB(0, 0, 0).rgba;
 
                     } else
                         ptout.rgba = pcl::PointXYZRGB(0, 0, 0).rgba;
