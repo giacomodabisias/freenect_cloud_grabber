@@ -13,17 +13,10 @@ int main( int argc, char** argv )
 
   boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB>> cloud;
 
-  freenect_grabber<pcl::PointXYZRGB> c;
+  freenectGrabber<pcl::PointXYZRGB> c;
 
-  cloud = c.get_point_cloud_freenect(distance, true);
-  //else save fails
-   /* cloud->sensor_origin_.setZero();
-  cloud->sensor_orientation_.w () = 0.0;
-  cloud->sensor_orientation_.x () = 0.001;
-  cloud->sensor_orientation_.y () = 0.0;
-  cloud->sensor_orientation_.z () = 0.0;
-  */
-  //cloud->sensor_origin_.setZero();
+  cloud = c.get_point_cloud(distance, true);
+
 
   cloud->sensor_orientation_.w () = 0.0;
   cloud->sensor_orientation_.x () = 1.0;
@@ -40,17 +33,14 @@ int main( int argc, char** argv )
 
   while (!viewer->wasStopped ()) {
     viewer->spinOnce ();
-    cloud = c.get_point_cloud_freenect(distance, true);
+    cloud = c.get_point_cloud(distance, true);
 
     pcl::visualization::PointCloudColorHandlerRGBField<pcl::PointXYZRGB> rgb(cloud);
-    viewer->updatePointCloud<pcl::PointXYZRGB> (cloud,rgb, "sample cloud"); 
+    viewer->updatePointCloud<pcl::PointXYZRGB> (cloud, rgb, "sample cloud"); 
 
   }
   cloud->height = 1;
   cloud->width = cloud->points.size();
-    /*
-  pcl::io::savePCDFileASCII ("model.pcd", *cloud);
-  std::cout <<"dimensions " << cloud->height << " x " <<cloud->width <<std::endl;
- */
+
   return 0;
 }

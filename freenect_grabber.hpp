@@ -237,13 +237,6 @@ public:
                 } 
                 
             }
-            /*
-        cloud->sensor_origin_.setZero();
-        cloud->sensor_orientation_.w () = 0.0;
-        cloud->sensor_orientation_.x () = 1.0;
-        cloud->sensor_orientation_.y () = 0.0;
-        cloud->sensor_orientation_.z () = 0.0;
-        */
         cloud->height = 1;
         cloud->width = cloud->points.size();
         return (cloud);
