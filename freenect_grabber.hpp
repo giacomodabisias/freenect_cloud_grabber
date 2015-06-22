@@ -6,7 +6,9 @@
 
 #include <stdio.h>
 #include <iostream>
+#ifdef HAVE_OMP
 #include "omp.h"
+#endif // HAVE_OMP
 
 
 class Mutex {
